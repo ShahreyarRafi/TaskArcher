@@ -4,7 +4,7 @@ const Tasks = () => {
 
     const { register, handleSubmit, formState: { errors }, control } = useForm();
     const onSubmit = (data) => {
-        console.log(data)
+        console.log(data);
     };
 
     return (
@@ -25,10 +25,6 @@ const Tasks = () => {
                             method="dialog"
                             className='w-full'
                             onSubmit={handleSubmit(onSubmit)}
-                        // onSubmit={(e) => {
-                        //     e.preventDefault();
-                        //     handleUpdateReview(e.target.ratings.value, e.target.reviewText.value);
-                        // }}
                         >
                             <div className="w-full form-control mb-5">
                                 <label className="label">
@@ -36,78 +32,77 @@ const Tasks = () => {
                                 </label>
                                 <input
                                     {...register("title", { required: true })}
-                                    type="Text"
-                                    name="ratings"
+                                    type="text"
+                                    name="title"
                                     className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
-                                    step="any"  // Allow any decimal value
-                                    required
                                 />
                                 {errors.title && <span className='text-red-600'>Title is required</span>}
 
-                                <div className="flex items-center justify-between gap-4">
-                                    <div>
+                                <div className="flex items-center justify-between gap-4 w-full">
+                                    <div className='w-1/2'>
                                         <label className="label">
                                             <span className="text-lg text-black duration-300">Priority</span>
                                         </label>
                                         <input
+                                            {...register("priority", { required: true })}
                                             type="Text"
-                                            name="ratings"
+                                            name="priority"
                                             className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
-                                            step="any"  // Allow any decimal value
-                                            required
                                         />
+                                        {errors.priority && <span className='text-red-600'>Priority is required</span>}
                                     </div>
-                                    <div>
+                                    <div className='w-1/2'>
                                         <label className="label">
-                                            <span className="text-lg text-black  duration-300">Status</span>
+                                            <span className="text-lg text-black duration-300">Status</span>
                                         </label>
                                         <input
+                                            {...register("status", { required: true })}
                                             type="Text"
-                                            name="ratings"
+                                            name="status"
                                             className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
-                                            step="any"  // Allow any decimal value
-                                            required
                                         />
+                                        {errors.status && <span className='text-red-600'>Status is required</span>}
                                     </div>
                                 </div>
 
-                                <div className="flex items-center justify-between gap-4">
-                                    <div>
+                                <div className="flex items-center justify-between w-full gap-4">
+                                    <div className='w-1/2'>
                                         <label className="label">
                                             <span className="text-lg text-black  duration-300">Start Date</span>
                                         </label>
                                         <input
+                                            {...register("startDate", { required: true })}
                                             type="Text"
-                                            name="ratings"
+                                            name="startDate"
                                             className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
-                                            step="any"  // Allow any decimal value
-                                            required
                                         />
+                                        {errors.startDate && <span className='text-red-600'>Start Date is required</span>}
                                     </div>
-                                    <div>
+                                    <div className='w-1/2'>
                                         <label className="label">
                                             <span className="text-lg text-black  duration-300">Deadline</span>
                                         </label>
                                         <input
-                                            type="Text"
-                                            name="ratings"
+                                            {...register("deadline", { required: true })}
+                                            type="text"
+                                            name="deadline"
                                             className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
-                                            step="any"  // Allow any decimal value
-                                            required
                                         />
+                                        {errors.deadline && <span className='text-red-600'>Deadline is required</span>}
                                     </div>
                                 </div>
 
                                 <div className="form-control mb-5">
                                     <label className="label">
-                                        <span className="text-lg text-black duration-300">Desciption</span>
+                                        <span className="text-lg text-black duration-300">Description</span>
                                     </label>
                                     <label className="rounded-lg">
                                         <textarea
-                                            name="reviewText"
+                                            {...register("description", { required: true })}
+                                            name="description"
                                             className="input input-bordered rounded-2xl w-full h-40 bg-white duration-300"
-                                            required
                                         />
+                                        {errors.description && <span className='text-red-600'>Description is required</span>}
                                     </label>
                                 </div>
                                 <div className="flex items-center justify-between">
