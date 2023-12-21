@@ -38,41 +38,75 @@ const Tasks = () => {
                                 />
                                 {errors.title && <span className='text-red-600'>Title is required</span>}
 
-                                <div className="flex items-center justify-between gap-4 w-full">
+                                <div className="flex items-center justify-between gap-4 mb-5 w-full">
                                     <div className='w-1/2'>
                                         <label className="label">
                                             <span className="text-lg text-black duration-300">Priority</span>
                                         </label>
-                                        <input
-                                            {...register("priority", { required: true })}
-                                            type="Text"
-                                            name="priority"
-                                            className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
-                                        />
-                                        {errors.priority && <span className='text-red-600'>Priority is required</span>}
+                                        <label className="rounded-lg">
+                                            <Controller
+                                                name="priority"
+                                                control={control}
+                                                rules={{ required: "Priority is required" }}
+                                                render={({ field }) => (
+                                                    <select
+                                                        {...field}
+                                                        className="input input-bordered rounded-2xl w-full bg-white dark:text-gray-400 duration-300"
+                                                    >
+                                                        <option value="" disabled selected>
+                                                            Select Priority
+                                                        </option>
+                                                        <option value="Low">Low</option>
+                                                        <option value="Moderate">Moderate</option>
+                                                        <option value="High">High</option>
+                                                    </select>
+                                                )}
+                                            />
+                                        </label>
+                                        {errors.priority && (
+                                            <span className='text-red-600'>{errors.priority.message}</span>
+                                        )}
                                     </div>
+
+
                                     <div className='w-1/2'>
                                         <label className="label">
                                             <span className="text-lg text-black duration-300">Status</span>
                                         </label>
-                                        <input
-                                            {...register("status", { required: true })}
-                                            type="Text"
-                                            name="status"
-                                            className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
-                                        />
-                                        {errors.status && <span className='text-red-600'>Status is required</span>}
+                                        <label className="rounded-lg">
+                                            <Controller
+                                                name="status"
+                                                control={control}
+                                                rules={{ required: "Status is required" }}
+                                                render={({ field }) => (
+                                                    <select
+                                                        {...field}
+                                                        className="input input-bordered rounded-2xl w-full bg-white dark:text-gray-400 duration-300"
+                                                    >
+                                                        <option value="" disabled selected>
+                                                            Select Status
+                                                        </option>
+                                                        <option value="To-Do">To-Do</option>
+                                                        <option value="Ongoing">Ongoing</option>
+                                                        <option value="Completed">Completed</option>
+                                                    </select>
+                                                )}
+                                            />
+                                        </label>
+                                        {errors.status && (
+                                            <span className='text-red-600'>{errors.status.message}</span>
+                                        )}
                                     </div>
                                 </div>
 
-                                <div className="flex items-center justify-between w-full gap-4">
+                                <div className="flex items-center justify-between w-[97%] gap-4">
                                     <div className='w-1/2'>
                                         <label className="label">
                                             <span className="text-lg text-black  duration-300">Start Date</span>
                                         </label>
                                         <input
                                             {...register("startDate", { required: true })}
-                                            type="Text"
+                                            type="datetime-local"
                                             name="startDate"
                                             className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
                                         />
@@ -84,7 +118,7 @@ const Tasks = () => {
                                         </label>
                                         <input
                                             {...register("deadline", { required: true })}
-                                            type="text"
+                                            type="datetime-local"
                                             name="deadline"
                                             className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
                                         />
