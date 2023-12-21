@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import logo from '/TaskArcher.png'
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import userPicPlaceholder from '../../../assets/images/userPicPlaceHolder.png';
 import profile from '../../../assets/images/userIconWhite.png';
 import profileDark from '../../../assets/images/userIconBlack.png';
@@ -12,17 +12,18 @@ import { useQuery } from 'react-query';
 
 
 
-
 const Navbar = () => {
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [dropDownOpen, setDropDownOpen] = useState(false);
     const { user, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [isAdmin] = useAdmin()
 
     const handleLogout = () => {
         logout();
-    }
+        navigate("/"); // Redirect to the home page after successful logout
+    };
 
     const userTheme = localStorage.getItem('theme');
 
@@ -86,8 +87,8 @@ const Navbar = () => {
                     }
                     id="example-navbar-danger"
                 >
-                    <div className='w-full flex justify-center items-center mt-5 lg:mt-0 mb-2 lg:mb-0'>
-                        <div className='flex text-center w-full'>
+                    <div className='w-full flex justify-between items-center mt-5 lg:mt-0 mb-2 lg:mb-0'>
+                        <div className='flex text-center w-full lg:-ml-36'>
                             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto gap-3 xl:gap-5 lg:mx-auto">
                                 <li className="nav-item px-1 xl:px-3 py-2 flex items-center text-sm xl:text-base uppercase font-semibold  text-black dark:text-white duration-300 hover:opacity-75">
                                     <NavLink
@@ -149,9 +150,6 @@ const Navbar = () => {
                                         </ul>
                                     </li>
                                 )}
-
-
-
                                 <li className='flex items-center gap-3 lg:gap-6'>
                                     {/* <div className=" flex rounded-full text-black dark:text-white duration-300">
                                         <DarkModeSwitch
@@ -194,7 +192,7 @@ const Navbar = () => {
                                                 </button>
 
                                                 {dropDownOpen && (
-                                                    <div className="origin-top-right absolute right-0 mt-2 w-auto pr-10 rounded-md shadow-lg bg-slate-100 dark:bg-[#062230] border border-neutral-300 dark:border-gray-800 ring-1 ring-white dark:ring-black ring-opacity-5">
+                                                    <div className="whitespace-normal bg-white bg-opacity-50 backdrop-blur-lg origin-top-right absolute right-0 mt-2 w-auto pr-10 rounded-md shadow-lg dark:bg-[#062230] border border-neutral-300 dark:border-gray-800 ring-1 ring-white dark:ring-black ring-opacity-5">
                                                         <ul className="py-2">
                                                             {user && (
                                                                 <li>

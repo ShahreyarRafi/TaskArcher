@@ -11,6 +11,7 @@ import UserDashboard from "../Dashboards/User/UserDashboard/UserDashboard";
 import UserProfile from "../Dashboards/User/UserProfile/UserProfile";
 import AdminDashboard from "../Dashboards/Admin/AdminDashboard/AdminDashboard";
 import AdminProfile from "../Dashboards/Admin/AdminProfile/AdminProfile";
+import Tasks from "../Dashboards/User/Tasks/Tasks";
 
 
 
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
             {
                 path: 'user/profile',
                 element: (<PrivateRoute><UserProfile></UserProfile></PrivateRoute>)
+            },
+            {
+                path: 'user/tasks',
+                element: (<PrivateRoute><Tasks></Tasks></PrivateRoute>)
             },
         ]
     },

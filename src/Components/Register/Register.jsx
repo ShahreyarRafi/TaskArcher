@@ -25,9 +25,6 @@ const Register = () => {
     const [error, setError] = useState("");
     const axiosPublic = useAxiosPublic();
 
-
-
-
     const handleGoogleSignIn = () => {
         googleSignIn()
     }

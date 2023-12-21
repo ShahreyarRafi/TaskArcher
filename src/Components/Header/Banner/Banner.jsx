@@ -1,6 +1,7 @@
 import React from 'react';
 import objectOrange from '../../../assets/images/orange.png';
 import objectPurple from '../../../assets/images/purple.png';
+import { Link } from 'react-router-dom';
 
 const Banner = () => {
     return (
@@ -32,12 +33,15 @@ const Banner = () => {
                                 <div className='text-lg'>Learn More</div>
                             </div>
                         </button>
-                        <button className='px-8 py-5 text-slate-800 outline outline-2 outline-gray-700 rounded-full hover:bg-[#F49C4D] hover:outline-0 hover:text-white'
-                            style={{ transition: 'background-color 300ms, color 300ms, outline 0s' }}>
-                            <div className=''>
-                                <div className='text-lg'>Get Started</div>
-                            </div>
-                        </button>
+                        <Link to="/login">
+                            <button className='px-8 py-5 text-slate-800 outline outline-2 outline-gray-700 rounded-full hover:bg-[#F49C4D] hover:outline-0 hover:text-white'
+                                style={{ transition: 'background-color 300ms, color 300ms, outline 0s' }}
+                                >
+                                <div className=''>
+                                    <div className='text-lg'>Let’s Explore</div>
+                                </div>
+                            </button>
+                        </Link>
 
                     </div>
                 </div>
