@@ -42,7 +42,7 @@ const Register = () => {
                     await signUp(email, password, name, photoUrl);
 
                     // Send user data to the server
-                    const response = await fetch('https://campus-cuisine.vercel.app/user', {
+                    const response = await fetch('http://localhost:5000/user', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -51,7 +51,6 @@ const Register = () => {
                             email,
                             name,
                             photoUrl,
-                            badge: "Bronze",
                             role: "Member",
                         }),
                     });

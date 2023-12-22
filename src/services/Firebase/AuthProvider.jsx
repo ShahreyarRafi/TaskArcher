@@ -10,12 +10,15 @@ import {
     signOut,
     GoogleAuthProvider,
     signInWithPopup,
+    GithubAuthProvider,
 } from "firebase/auth";
 
 export const AuthContext = createContext(null);
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
+
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
@@ -26,6 +29,11 @@ const AuthProvider = ({ children }) => {
         setLoading(true);
         return signInWithPopup(auth, googleProvider);
     };
+
+    const githubSignIn = () => {
+        setLoading(true)
+        return signInWithPopup(auth, githubProvider)
+    }
 
     const signUp = async (email, password, name, photoUrl) => {
         setLoading(true);
@@ -89,6 +97,7 @@ const AuthProvider = ({ children }) => {
     }, [axiosPublic]);
 
     const AuthInfo = {
+        githubSignIn,
         googleSignIn,
         signUp,
         signIn,

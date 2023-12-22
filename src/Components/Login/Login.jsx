@@ -15,7 +15,7 @@ const Login = () => {
         console.log(data)
     };
 
-    const { googleSignIn, signIn } = useContext(AuthContext);
+    const { githubSignIn, googleSignIn, signIn } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -28,9 +28,19 @@ const Login = () => {
     const handleGoogle = async () => {
         const intendedDestination = location.state?.from || '/';
         setGoogleLoginRedirect(intendedDestination);
-
         try {
             const result = await googleSignIn();
+            console.log(result.user);
+            navigate(intendedDestination);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleGithub = async () => {
+        const intendedDestination = location.state?.from || '/';
+        setGoogleLoginRedirect(intendedDestination);
+        try {
+            const result = await githubSignIn();
             console.log(result.user);
             navigate(intendedDestination);
         } catch (error) {
@@ -138,6 +148,16 @@ const Login = () => {
                                                             className=" px-4 py-2 border-2 flex gap-2 border-slate-200 text-neutral-300 hover:border-slate-400 hover:text-neutral-500 hover:shadow transition duration-150">
                                                             <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
                                                             <span>Login with Google</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className='flex justify-between items-center '>
+                                                        <a href="#!" className='text-neutral-100'>Forgot password?</a>
+                                                        <button
+                                                            type='button'
+                                                            onClick={handleGithub}
+                                                            className=" px-4 py-2 border-2 flex gap-2 border-slate-200 text-neutral-300 hover:border-slate-400 hover:text-neutral-500 hover:shadow transition duration-150">
+                                                            <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
+                                                            <span>Login with Github</span>
                                                         </button>
                                                     </div>
                                                 </div>

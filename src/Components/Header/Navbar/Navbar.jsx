@@ -49,7 +49,7 @@ const Navbar = () => {
     const { isPending, data: upcoming } = useQuery({
         queryKey: ['upcoming'],
         queryFn: async () => {
-            const res = await fetch('https://campus-cuisine.vercel.app/Upcoming')
+            const res = await fetch('http://localhost:5000/Upcoming')
             return res.json();
         }
     })

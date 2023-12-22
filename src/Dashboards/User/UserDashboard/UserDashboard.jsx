@@ -22,18 +22,20 @@ import axios from "axios";
 
 
 const UserDashboard = () => {
-    const { User, LogOutAccount } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [userData, setUserData] = useState({});
+
+    console.log(user?.displayName)
 
 
 
     useEffect(() => {
-        if (User) {
-            axios.get(`https://diagnostic-center-server-tau.vercel.app/single/user?email=${User?.email}`)
+        if (user) {
+            axios.get(`https://diagnostic-center-server-tau.vercel.app/single/user?email=${user?.email}`)
                 .then(res => setUserData(res.data))
                 .catch(err => toast.error(err?.message ? err.message : err));
         }
-    }, [User]);
+    }, [user]);
 
     return (
         <section>
@@ -89,12 +91,12 @@ const UserDashboard = () => {
                 <div className="drawer-side rounded-lg">
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                     <nav className="p-4 w-80 min-h-full bg-base-200 bg-opacity-90 backdrop-blur-lg roboto space-y-8">
-                        <div className="text-center space-y-6 mt-6">
+                        <div className="text-center space-y-6 mt-6 ">
                             <div className="mx-auto">
                                 <div className="mb-4">
-                                    {User?.photoURL ? (
+                                    {user?.photoURL ? (
                                         <img
-                                            src={User?.photoURL}
+                                            src={user?.photoURL}
                                             alt="Profile"
                                             className="h-40 rounded-full mx-auto"
                                         />
@@ -107,13 +109,13 @@ const UserDashboard = () => {
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-black text-lg text-center">{User?.displayName}</p>
+                                    <p className="text-black text-2xl font-medium text-center">{user?.displayName}</p>
                                 </div>
                             </div>
                         </div>
                         {/* Sidebar content here */}
                         <div className=" px-5">
-                            <div className="flex flex-col items-center space-y-2">
+                            <div className="flex flex-col items-center space-y-3">
                                 <NavLink
                                     to="/dashboard/user/profile"
                                     className={({ isActive, isPending }) =>
