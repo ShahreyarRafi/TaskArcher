@@ -104,8 +104,8 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
 
 
 
-                            <div className="flex items-center justify-between gap-4 mb-5 w-full">
-                                <div className='w-1/2'>
+                            <div className="mb-4 w-full">
+                                <div className='w-full'>
                                     <label className="label">
                                         <span className="text-lg text-black duration-300">Priority</span>
                                     </label>
@@ -134,7 +134,7 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
                                         <span className='text-red-600'>{errors.priority.message}</span>
                                     )}
                                 </div>
-                                <div className='w-1/2'>
+                                {/* <div className='w-1/2'>
                                     <label className="label">
                                         <span className="text-lg text-black duration-300">Status</span>
                                     </label>
@@ -162,10 +162,10 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
                                     {errors.status && (
                                         <span className='text-red-600'>{errors.status.message}</span>
                                     )}
-                                </div>
+                                </div> */}
                             </div>
-                            <div className="flex items-center justify-between w-[97%] gap-4">
-                                <div className='w-1/2'>
+                            <div className="w-full">
+                                <div className='w-full'>
                                     <label className="label">
                                         <span className="text-lg text-black duration-300">Start Date</span>
                                     </label>
@@ -178,7 +178,7 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
                                     />
                                     {errors.startDate && <span className='text-red-600'>Start Date is required</span>}
                                 </div>
-                                <div className='w-1/2'>
+                                <div className='w-full'>
                                     <label className="label">
                                         <span className="text-lg text-black duration-300">Deadline</span>
                                     </label>

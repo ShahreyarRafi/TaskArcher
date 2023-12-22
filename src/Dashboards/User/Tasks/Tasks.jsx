@@ -10,7 +10,7 @@ const currentDate = new Date();
 
 // Format the date to YYYY-MM-DD
 const year = currentDate.getFullYear();
-const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+const month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
 const day = String(currentDate.getDate()).padStart(2, '0');
 
 // Format the time to HH:mm
@@ -22,9 +22,9 @@ const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
 const Tasks = () => {
 
-    const [formValues, setFormValues] = useState({}); // State to store form values for each modal
+    const [formValues, setFormValues] = useState({}); 
     const { register, handleSubmit, formState: { errors }, control, setValue } = useForm({
-        defaultValues: formValues, // Set default values here
+        defaultValues: formValues, 
     });
     const { user } = useContext(AuthContext);
     const axiosPublic = useAxiosPublic();
@@ -44,16 +44,11 @@ const Tasks = () => {
     };
 
 
-
-
-
-
-
-
     const onSubmit = async (data) => {
         console.log('called');
         const newTask = {
             ...data,
+            status: "To-Do",
             postTime: formattedDateTime,
             userEmail: user?.email,
             userName: user?.displayName,
@@ -93,6 +88,10 @@ const Tasks = () => {
             });
         }
     };
+
+    const todoTasks = allTasks.filter(task => task.status === 'To-Do' && task.userEmail === user.email);
+    const ongoingTasks = allTasks.filter(task => task.status === 'Ongoing' && task.userEmail === user.email);
+    const completedTasks = allTasks.filter(task => task.status === 'Completed' && task.userEmail === user.email);
 
     const deleteTask = async (taskId) => {
         try {
@@ -170,8 +169,8 @@ const Tasks = () => {
                                 />
                                 {errors.title && <span className='text-red-600'>Title is required</span>}
 
-                                <div className="flex items-center justify-between gap-4 mb-5 w-full">
-                                    <div className='w-1/2'>
+                                <div className="mb-4 w-full">
+                                    <div className='w-full'>
                                         <label className="label">
                                             <span className="text-lg text-black duration-300">Priority</span>
                                         </label>
@@ -199,9 +198,7 @@ const Tasks = () => {
                                             <span className='text-red-600'>{errors.priority.message}</span>
                                         )}
                                     </div>
-
-
-                                    <div className='w-1/2'>
+                                    {/* <div className='w-1/2'>
                                         <label className="label">
                                             <span className="text-lg text-black duration-300">Status</span>
                                         </label>
@@ -228,11 +225,11 @@ const Tasks = () => {
                                         {errors.status && (
                                             <span className='text-red-600'>{errors.status.message}</span>
                                         )}
-                                    </div>
+                                    </div> */}
                                 </div>
 
-                                <div className="flex items-center justify-between w-[97%] gap-4">
-                                    <div className='w-1/2'>
+                                <div className=" w-full">
+                                    <div className='w-full'>
                                         <label className="label">
                                             <span className="text-lg text-black  duration-300">Start Date</span>
                                         </label>
@@ -244,7 +241,7 @@ const Tasks = () => {
                                         />
                                         {errors.startDate && <span className='text-red-600'>Start Date is required</span>}
                                     </div>
-                                    <div className='w-1/2'>
+                                    <div className='w-full'>
                                         <label className="label">
                                             <span className="text-lg text-black  duration-300">Deadline</span>
                                         </label>
@@ -299,24 +296,71 @@ const Tasks = () => {
                 </div>
             </dialog>
 
-            {allTasks?.map((task) => (
-                <TaskItem
-                    key={task._id}
-                    task={task}
-                    handleUpdateClick={handleUpdateClick}
-                    deleteTask={deleteTask}
-                    defaultValues={{
-                        titleUpdate: formValues.titleUpdate,
-                        priorityUpdate: formValues.priorityUpdate,
-                        statusUpdate: formValues.statusUpdate,
-                        startDateUpdate: formValues.startDateUpdate,
-                        deadlineUpdate: formValues.deadlineUpdate,
-                        descriptionUpdate: formValues.descriptionUpdate,
-                    }}
-                    onSubmit={onSubmit}
-                    refetch={refetch()}
-                />
-            ))}
+            <div className='flex items-center justify-between w-full'>
+                <div className='w-full'>
+                    <h2 className='text-2xl font-medium text-center'>To-Do</h2>
+                    {todoTasks.map((task) => (
+                        <TaskItem
+                            key={task._id}
+                            task={task}
+                            handleUpdateClick={handleUpdateClick}
+                            deleteTask={deleteTask}
+                            defaultValues={{
+                                titleUpdate: formValues.titleUpdate,
+                                priorityUpdate: formValues.priorityUpdate,
+                                statusUpdate: formValues.statusUpdate,
+                                startDateUpdate: formValues.startDateUpdate,
+                                deadlineUpdate: formValues.deadlineUpdate,
+                                descriptionUpdate: formValues.descriptionUpdate,
+                            }}
+                            onSubmit={onSubmit}
+                            refetch={refetch()}
+                        />
+                    ))}
+                </div>
+                <div className='w-full'>
+                    <h2 className='text-2xl font-medium text-center'>Ongoing</h2>
+                    {ongoingTasks.map((task) => (
+                        <TaskItem
+                            key={task._id}
+                            task={task}
+                            handleUpdateClick={handleUpdateClick}
+                            deleteTask={deleteTask}
+                            defaultValues={{
+                                titleUpdate: formValues.titleUpdate,
+                                priorityUpdate: formValues.priorityUpdate,
+                                statusUpdate: formValues.statusUpdate,
+                                startDateUpdate: formValues.startDateUpdate,
+                                deadlineUpdate: formValues.deadlineUpdate,
+                                descriptionUpdate: formValues.descriptionUpdate,
+                            }}
+                            onSubmit={onSubmit}
+                            refetch={refetch()}
+                        />
+                    ))}
+                </div>
+                <div className='w-full'>
+                    <h2 className='text-2xl font-medium text-center'>Completed</h2>
+                    {completedTasks.map((task) => (
+                        <TaskItem
+                            key={task._id}
+                            task={task}
+                            handleUpdateClick={handleUpdateClick}
+                            deleteTask={deleteTask}
+                            defaultValues={{
+                                titleUpdate: formValues.titleUpdate,
+                                priorityUpdate: formValues.priorityUpdate,
+                                statusUpdate: formValues.statusUpdate,
+                                startDateUpdate: formValues.startDateUpdate,
+                                deadlineUpdate: formValues.deadlineUpdate,
+                                descriptionUpdate: formValues.descriptionUpdate,
+                            }}
+                            onSubmit={onSubmit}
+                            refetch={refetch()}
+                        />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
