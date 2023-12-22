@@ -63,7 +63,7 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
 
     return (
         <div key={task._id}>
-            <div className='bg-slate-200 px-4 py-2 w-28 h-28'>
+            <div className='bg-slate-200 px-4 py-2 w-28 h-28 mx-auto'>
                 <h3 className='mx-auto'>{task.title}</h3>
                 <button
                     className='bg-orange-400 text-white px-3 py-1 mx-auto mb-2'

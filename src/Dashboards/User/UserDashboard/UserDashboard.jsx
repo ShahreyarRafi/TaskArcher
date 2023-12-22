@@ -117,22 +117,6 @@ const UserDashboard = () => {
                         <div className=" px-5">
                             <div className="flex flex-col items-center space-y-3">
                                 <NavLink
-                                    to="/dashboard/user/profile"
-                                    className={({ isActive, isPending }) =>
-                                        isPending ? "pending" : isActive ? "font-bold uppercase text-[#FFFFF6] bg-[#F49C4D] px-8 py-4 rounded-full w-full duration-150 shadow-lg" : "font-bold uppercase text-black bg-white rounded-full w-full hover:bg-[#F49C4D] hover:text-white duration-150 px-8 py-4 "
-                                    }
-                                >
-                                    MY PROFILE
-                                </NavLink>
-                                <NavLink
-                                    to="/"
-                                    className={({ isActive, isPending }) =>
-                                        isPending ? "pending" : isActive ? "font-bold uppercase text-[#FFFFF6] bg-[#F49C4D] px-8 py-4 rounded-full w-full duration-150 shadow-lg" : "font-bold uppercase text-black bg-white rounded-full w-full hover:bg-[#F49C4D] hover:text-white duration-150 px-8 py-4"
-                                    }
-                                >
-                                    HOME
-                                </NavLink>
-                                <NavLink
                                     to="/dashboard/user/tasks"
                                     className={({ isActive, isPending }) =>
                                         isPending ? "pending" : isActive ? "font-bold uppercase text-[#FFFFF6] bg-[#F49C4D] px-8 py-4 rounded-full w-full duration-150 shadow-lg" : "font-bold uppercase text-black bg-white rounded-full w-full hover:bg-[#F49C4D] hover:text-white duration-150 px-8 py-4"
@@ -140,6 +124,20 @@ const UserDashboard = () => {
                                 >
                                     TASKS
                                 </NavLink>
+                                <NavLink
+                                    to="/dashboard/user/profile"
+                                    className={({ isActive, isPending }) =>
+                                        isPending ? "pending" : isActive ? "font-bold uppercase text-[#FFFFF6] bg-[#F49C4D] px-8 py-4 rounded-full w-full duration-150 shadow-lg" : "font-bold uppercase text-black bg-white rounded-full w-full hover:bg-[#F49C4D] hover:text-white duration-150 px-8 py-4 "
+                                    }
+                                >
+                                    MY PROFILE
+                                </NavLink>
+                                <Link
+                                    to="/"
+                                    className="font-bold uppercase text-black bg-white rounded-full w-full hover:bg-[#F49C4D] hover:text-white duration-150 px-8 py-4"
+                                >
+                                    HOME
+                                </Link>
                             </div>
                         </div>
                     </nav>

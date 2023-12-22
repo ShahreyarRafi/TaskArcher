@@ -91,14 +91,7 @@ const Tasks = () => {
     const completedTasks = allTasks.filter(task => task.status === 'Completed' && task.userEmail === user.email);
 
     const deleteTask = async (taskId) => {
-
-        try {
-
-        } catch (error) {
-            console.error('Error deleting meal:', error);
-            // Handle error (e.g., show an error message to the user)
-        }
-
+        
         try {
             const result = await Swal.fire({
                 title: 'Are you sure?',
@@ -153,15 +146,15 @@ const Tasks = () => {
 
 
     return (
-        <div className="flex flex-col items-center justify-center font-poppins space-y-5 h-[100svh]">
-            <h1 className="font-bold text-3xl font-poppins">Tasks Will Show Here</h1>
+        <div className="flex flex-col items-center justify-start font-poppins py-16 space-y-5 h-[100svh]">
+            <h1 className="font-bold text-3xl font-poppins mb-5">Your Tasks</h1>
             <button className='px-9 py-4 text-lg text-slate-800 outline outline-2 outline-gray-700 rounded-full hover:bg-[#F49C4D] hover:outline-0 hover:text-white'
                 style={{ transition: 'background-color 300ms, color 300ms, outline 0s' }}
                 onClick={() => document.getElementById('addTaskModal').showModal()}
             >
                 Add Task
             </button>
-
+            
             {/* modal for adding task */}
             <dialog id="addTaskModal" className="modal modal-bottom sm:modal-middle bg-opacity-100 backdrop-blur-lg">
                 <div className="modal-box rounded-3xl bg-white bg-opacity-90 backdrop-blur-lg">

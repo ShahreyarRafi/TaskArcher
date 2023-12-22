@@ -2,13 +2,20 @@
 import Banner from '../../Components/Header/Banner/Banner'
 import WhyUs from '../../Components/WhyUs/WhyUs';
 import Membership from '../../Components/Membership/Membership';
-
+import Aos from 'aos';
+import 'aos/dist/aos.css'
+import { useEffect } from 'react';
 
 const Home = () => {
 
+    useEffect(()=>{
+        Aos.init({duration: 1500});
+    },[])
+
+
     return (
         <div>
-            <Banner></Banner>
+            <div data-Aos = "fade"><Banner></Banner></div>
             {/* <Membership></Membership>
             <WhyUs></WhyUs> */}
         </div>
