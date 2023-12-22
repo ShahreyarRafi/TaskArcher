@@ -10,7 +10,7 @@ const currentDate = new Date();
 
 // Format the date to YYYY-MM-DD
 const year = currentDate.getFullYear();
-const month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+const month = String(currentDate.getMonth() + 1).padStart(2, '0');
 const day = String(currentDate.getDate()).padStart(2, '0');
 
 // Format the time to HH:mm
@@ -22,10 +22,7 @@ const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
 const Tasks = () => {
 
-    const [formValues, setFormValues] = useState({}); 
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm({
-        defaultValues: formValues, 
-    });
+    const { register, handleSubmit, formState: { errors }, control } = useForm();
     const { user } = useContext(AuthContext);
     const axiosPublic = useAxiosPublic();
 
@@ -94,18 +91,36 @@ const Tasks = () => {
     const completedTasks = allTasks.filter(task => task.status === 'Completed' && task.userEmail === user.email);
 
     const deleteTask = async (taskId) => {
+
         try {
-            const response = await axiosPublic.delete(`/tasks/${taskId}`);
-            if (response.status === 200) {
-                // Task deleted successfully, refresh the task list
-                refetch();
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Task Deleted Successfully",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
+
+        } catch (error) {
+            console.error('Error deleting meal:', error);
+            // Handle error (e.g., show an error message to the user)
+        }
+
+        try {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            });
+            if (result.isConfirmed) {
+                const response = await axiosPublic.delete(`/tasks/${taskId}`);
+                if (response.status === 200) {
+                    refetch();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Task Deleted Successfully",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
             } else {
                 Swal.fire({
                     position: "top-end",
@@ -305,14 +320,6 @@ const Tasks = () => {
                             task={task}
                             handleUpdateClick={handleUpdateClick}
                             deleteTask={deleteTask}
-                            defaultValues={{
-                                titleUpdate: formValues.titleUpdate,
-                                priorityUpdate: formValues.priorityUpdate,
-                                statusUpdate: formValues.statusUpdate,
-                                startDateUpdate: formValues.startDateUpdate,
-                                deadlineUpdate: formValues.deadlineUpdate,
-                                descriptionUpdate: formValues.descriptionUpdate,
-                            }}
                             onSubmit={onSubmit}
                             refetch={refetch()}
                         />
@@ -326,14 +333,6 @@ const Tasks = () => {
                             task={task}
                             handleUpdateClick={handleUpdateClick}
                             deleteTask={deleteTask}
-                            defaultValues={{
-                                titleUpdate: formValues.titleUpdate,
-                                priorityUpdate: formValues.priorityUpdate,
-                                statusUpdate: formValues.statusUpdate,
-                                startDateUpdate: formValues.startDateUpdate,
-                                deadlineUpdate: formValues.deadlineUpdate,
-                                descriptionUpdate: formValues.descriptionUpdate,
-                            }}
                             onSubmit={onSubmit}
                             refetch={refetch()}
                         />
@@ -347,14 +346,6 @@ const Tasks = () => {
                             task={task}
                             handleUpdateClick={handleUpdateClick}
                             deleteTask={deleteTask}
-                            defaultValues={{
-                                titleUpdate: formValues.titleUpdate,
-                                priorityUpdate: formValues.priorityUpdate,
-                                statusUpdate: formValues.statusUpdate,
-                                startDateUpdate: formValues.startDateUpdate,
-                                deadlineUpdate: formValues.deadlineUpdate,
-                                descriptionUpdate: formValues.descriptionUpdate,
-                            }}
                             onSubmit={onSubmit}
                             refetch={refetch()}
                         />
