@@ -222,7 +222,7 @@ const Navbar = () => {
                                                                                 </p>
                                                                             )}
                                                                             {!isAdmin && (
-                                                                                <Link to='dashboard/user/profile'>
+                                                                                <Link to='dashboard/user/tasks'>
                                                                                     <button
                                                                                         type="button"
                                                                                         className="text-sm xl:text-base font-semibold text-red-600 hover:text-red-900"

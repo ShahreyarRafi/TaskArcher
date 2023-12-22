@@ -1,12 +1,26 @@
 import { useForm, Controller } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../../Hook/useAxiosPublic';
+import { useDrag } from 'react-dnd';
 
-const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
+
+const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch, index, }) => {
 
     const { register, handleSubmit, formState: { errors }, control } = useForm();
-
     const axiosPublic = useAxiosPublic();
+
+    const getPriorityColor = (priority) => {
+        switch (priority) {
+            case 'High':
+                return 'bg-red-500';
+            case 'Moderate':
+                return 'bg-orange-400';
+            case 'Low':
+                return 'bg-green-500';
+            default:
+                return 'bg-gray-500'; // Default color for unknown priority
+        }
+    };
 
 
     const updateTask = async (taskId, updatedData) => {
@@ -61,23 +75,46 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
     };
 
 
+    const [{ isDragging }, drag] = useDrag({
+        type: 'TASK',
+        item: { taskId: task._id },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
+
+
     return (
-        <div key={task._id}>
-            <div className='bg-slate-200 px-4 py-2 w-28 h-28 mx-auto'>
-                <h3 className='mx-auto'>{task.title}</h3>
-                <button
-                    className='bg-orange-400 text-white px-3 py-1 mx-auto mb-2'
-                    onClick={() => handleUpdateClick(task._id)}
-                >
-                    Update
-                </button>
-                <button
-                    className='bg-red-500 text-white px-3 py-1 mx-auto'
-                    onClick={() => deleteTask(task._id)}
-                >
-                    Delete
-                </button>
+        <div
+            key={task._id}
+            ref={drag}
+            style={{
+                opacity: isDragging ? 0.5 : 1,
+                cursor: 'move',
+            }}
+        >
+            {/* card for task */}
+            <div className='h-80 w-80 bg-orange-100 p-5 flex items-start justify-start shadow-md bg-opacity-5 blurry-card'>
+                <div className='flex-grow'>
+                    <h3 className={`mx-auto inline-block px-3 py-1 mb-2 rounded-full text-white text-sm ${getPriorityColor(task.priority)}`}>{task.priority}</h3>
+                    <h3 className='mx-auto text-xl mb-2'>{task.title}</h3>
+                    <h3 className='mx-auto text-sm mb-2'>{task.startDate} - {task.deadline}</h3>
+                    <h3 className='mx-auto mb-3 line-clamp-6'>{task.description}</h3>
+                    <button
+                        className='bg-orange-400 text-white px-3 py-1 mx-auto mb-2'
+                        onClick={() => handleUpdateClick(task._id)}
+                    >
+                        Update
+                    </button>
+                    <button
+                        className='bg-red-500 text-white px-3 py-1 mx-auto'
+                        onClick={() => deleteTask(task._id)}
+                    >
+                        Delete
+                    </button>
+                </div>
             </div>
+
             {/* Modal for updating task */}
             <dialog id={`updatingTaskModal-${task._id}`} className="modal modal-bottom sm:modal-middle bg-opacity-100 backdrop-blur-lg">
                 {/* Modal content */}

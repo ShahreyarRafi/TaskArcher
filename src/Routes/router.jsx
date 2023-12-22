@@ -12,6 +12,7 @@ import UserProfile from "../Dashboards/User/UserProfile/UserProfile";
 import AdminDashboard from "../Dashboards/Admin/AdminDashboard/AdminDashboard";
 import AdminProfile from "../Dashboards/Admin/AdminProfile/AdminProfile";
 import Tasks from "../Dashboards/User/Tasks/Tasks";
+import AllTasksPage from "../Dashboards/User/Tasks/AllTasksPage";
 
 
 
@@ -60,7 +61,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'user/tasks',
-                element: (<PrivateRoute><Tasks></Tasks></PrivateRoute>)
+                element: (<PrivateRoute><AllTasksPage></AllTasksPage></PrivateRoute>)
             },
         ]
     },

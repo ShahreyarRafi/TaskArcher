@@ -4,7 +4,12 @@ import { AuthContext } from '../../../services/Firebase/AuthProvider';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../../Hook/useAxiosPublic';
 import { useQuery } from 'react-query';
+import { useDrag, useDrop } from 'react-dnd';
 import TaskItem from './TaskItem';
+
+
+
+
 
 const currentDate = new Date();
 
@@ -39,6 +44,46 @@ const Tasks = () => {
         // Show the modal
         document.getElementById(`updatingTaskModal-${taskId}`).showModal();
     };
+
+    const handleDrop = async (taskId, newStatus) => {
+        try {
+            const response = await axiosPublic.patch(`/tasks/${taskId}`, { status: newStatus });
+            if (response.status === 200) {
+                refetch();
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Task Updated Successfully',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        } catch (error) {
+            console.error('Error updating task status:', error);
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Failed to update task status',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        }
+    };
+
+    const [, dropTodo] = useDrop({
+        accept: 'TASK',
+        drop: (item) => handleDrop(item.taskId, 'To-Do'),
+    });
+
+    const [, dropOngoing] = useDrop({
+        accept: 'TASK',
+        drop: (item) => handleDrop(item.taskId, 'Ongoing'),
+    });
+
+    const [, dropCompleted] = useDrop({
+        accept: 'TASK',
+        drop: (item) => handleDrop(item.taskId, 'Completed'),
+    });
 
 
     const onSubmit = async (data) => {
@@ -91,7 +136,7 @@ const Tasks = () => {
     const completedTasks = allTasks.filter(task => task.status === 'Completed' && task.userEmail === user.email);
 
     const deleteTask = async (taskId) => {
-        
+
         try {
             const result = await Swal.fire({
                 title: 'Are you sure?',
@@ -136,6 +181,8 @@ const Tasks = () => {
     };
 
 
+
+
     if (isLoading) {
         return (
             <div className='h-[69vh] flex justify-center items-center'>
@@ -147,14 +194,14 @@ const Tasks = () => {
 
     return (
         <div className="flex flex-col items-center justify-start font-poppins py-16 space-y-5 h-[100svh]">
-            <h1 className="font-bold text-3xl font-poppins mb-5">Your Tasks</h1>
+            <h1 className="font-bold text-3xl font-poppins mb-4">Your Tasks</h1>
             <button className='px-9 py-4 text-lg text-slate-800 outline outline-2 outline-gray-700 rounded-full hover:bg-[#F49C4D] hover:outline-0 hover:text-white'
                 style={{ transition: 'background-color 300ms, color 300ms, outline 0s' }}
                 onClick={() => document.getElementById('addTaskModal').showModal()}
             >
                 Add Task
             </button>
-            
+
             {/* modal for adding task */}
             <dialog id="addTaskModal" className="modal modal-bottom sm:modal-middle bg-opacity-100 backdrop-blur-lg">
                 <div className="modal-box rounded-3xl bg-white bg-opacity-90 backdrop-blur-lg">
@@ -304,22 +351,26 @@ const Tasks = () => {
                 </div>
             </dialog>
 
-            <div className='flex items-center justify-between w-full'>
-                <div className='w-full'>
-                    <h2 className='text-2xl font-medium text-center'>To-Do</h2>
+            {/* to-do task section */}
+            <div className='flex items-start justify-between w-full max-w-6xl'>
+                {/* To-do task section */}
+                <div ref={dropTodo} className="w-full">
+                    <h2 className="text-2xl font-medium text-center mb-3">To-Do</h2>
                     {todoTasks.map((task) => (
-                        <TaskItem
-                            key={task._id}
-                            task={task}
-                            handleUpdateClick={handleUpdateClick}
-                            deleteTask={deleteTask}
-                            onSubmit={onSubmit}
-                            refetch={refetch()}
-                        />
+                        <div key={task._id}>
+                            <TaskItem
+                                task={task}
+                                handleUpdateClick={handleUpdateClick}
+                                deleteTask={deleteTask}
+                                onSubmit={onSubmit}
+                                refetch={refetch()}
+                            />
+                        </div>
                     ))}
                 </div>
-                <div className='w-full'>
-                    <h2 className='text-2xl font-medium text-center'>Ongoing</h2>
+                {/* Ongoing task section */}
+                <div ref={dropOngoing} className="w-full">
+                    <h2 className="text-2xl font-medium text-center mb-3">Ongoing</h2>
                     {ongoingTasks.map((task) => (
                         <TaskItem
                             key={task._id}
@@ -331,8 +382,9 @@ const Tasks = () => {
                         />
                     ))}
                 </div>
-                <div className='w-full'>
-                    <h2 className='text-2xl font-medium text-center'>Completed</h2>
+                {/* Completed task section */}
+                <div ref={dropCompleted} className="w-full">
+                    <h2 className="text-2xl font-medium text-center mb-3">Completed</h2>
                     {completedTasks.map((task) => (
                         <TaskItem
                             key={task._id}
@@ -350,8 +402,6 @@ const Tasks = () => {
 };
 
 export default Tasks;
-
-
 
 
 

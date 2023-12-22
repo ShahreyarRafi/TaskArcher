@@ -9,3 +9,26 @@
 .font-poppins {
     font-family: 'Poppins', sans-serif;
 }
+
+.grid-lines {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px;
+    z-index: 1; 
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+
+
+  .blurry-card {
+
+    background-size: 20px 20px; /* Adjust the size of the grid pattern */
+    backdrop-filter: blur(2px); /* Adjust the blur effect */
+    border-radius: 8px; /* Add border-radius if needed */
+    margin: auto; /* Center the card */
+    position: relative; /* Ensure z-index works */
+    z-index: 1; /* Ensure the card appears above the grid lines */
+  }
+  
