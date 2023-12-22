@@ -45,13 +45,8 @@ const Tasks = () => {
 
 
 
-    const handleInputChange = (e) => {
-        // Update the form values as the user types
-        setFormValues({
-            ...formValues,
-            [e.target.name]: e.target.value,
-        });
-    };
+
+
 
 
 
@@ -70,6 +65,7 @@ const Tasks = () => {
             document.getElementById(`addTaskModal`).close()
 
             if (response.data.insertedId) {
+                refetch();
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -317,8 +313,8 @@ const Tasks = () => {
                         deadlineUpdate: formValues.deadlineUpdate,
                         descriptionUpdate: formValues.descriptionUpdate,
                     }}
-                    handleInputChange={handleInputChange}
                     onSubmit={onSubmit}
+                    refetch={refetch()}
                 />
             ))}
         </div>

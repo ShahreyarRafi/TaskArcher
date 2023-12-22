@@ -1,8 +1,66 @@
 import { useForm, Controller } from 'react-hook-form';
+import Swal from 'sweetalert2';
+import useAxiosPublic from '../../../Hook/useAxiosPublic';
 
-const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSubmit }) => {
+const TaskItem = ({ task, handleUpdateClick, deleteTask, refetch }) => {
 
-    const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
+    const { register, handleSubmit, formState: { errors }, control } = useForm();
+
+    const axiosPublic = useAxiosPublic();
+
+
+    const updateTask = async (taskId, updatedData) => {
+        try {
+            document.getElementById(`updatingTaskModal-${task._id}`).close();
+
+            // Make the API request to update the task
+            const response = await axiosPublic.put(`/tasks/${taskId}`, updatedData);
+
+            // Check the response and show a success or error message
+            if (response.data.updated) {
+                // Show success message
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Task Updated Successfully',
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {
+                    refetch();
+                });
+            } else {
+                // Show error message
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Failed to update task',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        } catch (error) {
+            console.error('Error updating task:', error);
+            // Show error message
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Failed to update task',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        }
+    };
+
+    // Function to handle the form submission
+    const handleUpdate = async (data) => {
+        // Call the parent component's handleUpdateClick function with the updated data
+        handleUpdateClick(task._id, data);
+
+        // Call the updateTask function to update the task via the API
+        await updateTask(task._id, data);
+    };
+
+
     return (
         <div key={task._id}>
             <div className='bg-slate-200 px-4 py-2 w-28 h-28'>
@@ -29,7 +87,7 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                     <form
                         method="dialog"
                         className='w-full'
-                        onSubmit={() => handleSubmit(task._id)}
+                        onSubmit={handleSubmit(handleUpdate)}
                     >
                         {/* Form inputs */}
                         <div className="w-full form-control mb-5">
@@ -37,9 +95,9 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                                 <span className="text-lg text-black duration-300">Title</span>
                             </label>
                             <input
-                                {...register("titleUpdate", { required: true })}
+                                {...register("title", { required: true })}
                                 type="text"
-                                name="titleUpdate"
+                                name="title"
                                 defaultValue={task.title}
                                 className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
                             />
@@ -53,16 +111,16 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                                     </label>
                                     <label className="rounded-lg">
                                         <Controller
-                                            name="priorityUpdate"
+                                            name="priority"
                                             control={control}
                                             rules={{ required: "Priority is required" }}
+                                            defaultValue={task.priority} // Set the default value here
                                             render={({ field }) => (
                                                 <select
                                                     {...field}
-                                                    defaultValue={task.priority}
                                                     className="input input-bordered rounded-2xl w-full bg-white dark:text-gray-400 duration-300"
                                                 >
-                                                    <option value="" disabled selected>
+                                                    <option value="" disabled>
                                                         Select Priority
                                                     </option>
                                                     <option value="Low">Low</option>
@@ -72,8 +130,8 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                                             )}
                                         />
                                     </label>
-                                    {errors.priorityUpdate && (
-                                        <span className='text-red-600'>{errors.priorityUpdate.message}</span>
+                                    {errors.priority && (
+                                        <span className='text-red-600'>{errors.priority.message}</span>
                                     )}
                                 </div>
                                 <div className='w-1/2'>
@@ -82,16 +140,16 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                                     </label>
                                     <label className="rounded-lg">
                                         <Controller
-                                            name="statusUpdate"
+                                            name="status"
                                             control={control}
                                             rules={{ required: "Status is required" }}
+                                            defaultValue={task.status} // Set the default value here
                                             render={({ field }) => (
                                                 <select
                                                     {...field}
-                                                    defaultValue={task.status}
                                                     className="input input-bordered rounded-2xl w-full bg-white dark:text-gray-400 duration-300"
                                                 >
-                                                    <option value="" disabled selected>
+                                                    <option value="" disabled>
                                                         Select Status
                                                     </option>
                                                     <option value="To-Do">To-Do</option>
@@ -101,8 +159,8 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                                             )}
                                         />
                                     </label>
-                                    {errors.statusUpdate && (
-                                        <span className='text-red-600'>{errors.statusUpdate.message}</span>
+                                    {errors.status && (
+                                        <span className='text-red-600'>{errors.status.message}</span>
                                     )}
                                 </div>
                             </div>
@@ -112,26 +170,26 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                                         <span className="text-lg text-black duration-300">Start Date</span>
                                     </label>
                                     <input
-                                        {...register("startDateUpdate", { required: true })}
+                                        {...register("startDate", { required: true })}
                                         type="datetime-local"
-                                        name="startDateUpdate"
+                                        name="startDate"
                                         defaultValue={task.startDate || ''}
                                         className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
                                     />
-                                    {errors.startDateUpdate && <span className='text-red-600'>Start Date is required</span>}
+                                    {errors.startDate && <span className='text-red-600'>Start Date is required</span>}
                                 </div>
                                 <div className='w-1/2'>
                                     <label className="label">
                                         <span className="text-lg text-black duration-300">Deadline</span>
                                     </label>
                                     <input
-                                        {...register("deadlineUpdate", { required: true })}
+                                        {...register("deadline", { required: true })}
                                         type="datetime-local"
-                                        name="deadlineUpdate"
+                                        name="deadline"
                                         defaultValue={task.deadline || ''}
                                         className="input input-bordered rounded-2xl w-full mb-3 bg-white duration-300"
                                     />
-                                    {errors.deadlineUpdate && <span className='text-red-600'>Deadline is required</span>}
+                                    {errors.deadline && <span className='text-red-600'>Deadline is required</span>}
                                 </div>
                             </div>
 
@@ -141,14 +199,13 @@ const TaskItem = ({ task, handleUpdateClick, deleteTask, handleInputChange, onSu
                                 </label>
                                 <label className="rounded-lg">
                                     <textarea
-                                        {...register("descriptionUpdate", { required: true })}
+                                        {...register("description", { required: true })}
                                         type="text"
-                                        name="descriptionUpdate"
-                                        defaultValue={task.description|| ''}
-                                        onChange={handleInputChange}
+                                        name="description"
+                                        defaultValue={task.description || ''}
                                         className="input input-bordered py-3 rounded-2xl w-full h-40 bg-white duration-300"
                                     />
-                                    {errors.descriptionUpdate && <span className='text-red-600'>Description is required</span>}
+                                    {errors.description && <span className='text-red-600'>Description is required</span>}
                                 </label>
                             </div>
                         </div>
